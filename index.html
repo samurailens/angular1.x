@@ -1,94 +1,106 @@
 <html>
 
 <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.js"></script>
+    <!-- <script src="path-to-js"></script> -->
 </head>
 
-<body style="margin-left:30%;">
+<body style="margin-left:30%;" ng-app="cynoApp">
 
-    <div ng-app ng-init="name='sachin';age = 50; sessions = [ 'A', 'B', 123, 23, false , true]; jobject = [{ name: 'cyno' }]">
+    <div  ng-controller="cynoCtrl" ng-init="name='sachin';age = 50; sessions = [ 'A', 'B', 123, 23, false , true]; jobject = [{ name: 'cyno' }]">
         <h1>
             Hello Cynosure!
         </h1>
 
-        <h3> Expressions </h3>
+        <h2> Session - 2 </h2>
+        <h3> App & Controllers </h3>
 
-        <p> {{ 2*3}} </p>
-        <p> {{ 2-3}} </p>
-        <p> {{ !false}} </p>
+        <h2> {{company}}</h2>
 
-        <p> {{ name }}</p>
+        <input ng-model="company">
 
-
-
-        <h3> ngModels </h3>
-
-        <input type=text ng-model="age"> <br>
-
-        Just Age <p> {{age}} </p>
-        Age multiplied by 2<p> {{age*2}} </p>
-
-        Bind <p ng-bind="age"></p>
-
-        <h3>ngShow</h3>
-
-        <input type=checkbox ng-model="visibility"> <br>
-        <div style="background:red" ng-show="visibility">
-            is this visible?
-        </div>
-
-        <div style="background:blue;color:white" ng-hidden="!visibility">
-            this should be hidden
-        </div>
-
-
-        <h3> ngRepeat </h3>
-
-        <p ng-repeat="session in sessions">
-            {{session}}
+        <p ng-repeat="item in sampleArr" >
+            <span ng-click="getClickeditem(item)";>{{item}}</span>
         </p>
 
-        <p>{{jobject.age}}</p>
-
-        <h3>ngValue</h3>
-
-        <input type=checkbox ng-model="enabled"> <br>
-        <input ng-value="age" ng-disabled="enabled">
-       
-        <h3>ngSwitch</h3>
-
-        <div ng-switch="age"> 
-            <h4>age </h4>
-            <p ng-switch-when="10"> the age is {{age}} </p>
-            <p ng-switch-when="50"> the age is {{age}} </p>   
+        <div >
+            <h4>{{sampleObject.name}}</h4>
+            <h4>{{sampleObject.location}}</h4>
+            <h4>{{sampleObject.country}}</h4>
+            <!-- <h4>{{sampleObject.currency}}</h4> -->
+            <h4>{{sampleObject.cost | currency }}</h4>
         </div>
 
-        <p ng-if="age==10"> the age is {{age}} , from ng-if</p>
+        <div>
+            <h2>Event Handler</h2>
+            <input ng-model="userinput">
+            <button ng-click="click();">Click Me</button>
+            <button ng-click="clickWithData(userinput);" ng-mouseover="mouseOnSendData();">Send Data</button>
+        </div>
 
-        <h3>ngSelect</h3>
-        <select ng-model="selectedNum">
-            <option ng-repeat="obj in jobject"> {{obj.name}}</option>
-        </select>
-
-        <p> {{selectedNum}} </p>
-
-
-        <h3>ngSrc</h3>
-        <!-- ng-src="https://www.placecage.com/400/{{num}}" -->
-        
-        <!-- Height : <input ng-model="height">
-        <img ng-src="https://www.placecage.com/400/{{height}}"> -->
-
-        <h3>
-               ngReadonly
-        </h3>
-
-        <input ng-readonly="true" ng-value="20"> 
+        <div ng-controller="cyno2Ctrl">
+                <h2> What happens if we define a new controller and overide the same things?</h2>
+        </div>
     </div>
 
-    <!-- <p> {{name}}</p> -->
+    <script>
+        
+        //Define a new Module
+        //angular.module("myMod", []);
 
-    
+
+        var app = angular.module("cynoApp", []);
+
+
+        app.controller("cynoCtrl", [ "$scope",  function( $scope ){
+
+            $scope.company = "cynosure-inc";
+
+            $scope.make = "vento";
+
+            $scope.sampleArr = ["1", 2, 3, 4];
+
+            $scope.sampleObject = {
+                "name" : "Cynosure",
+                "location": "HSR",
+                "country" : "India",
+                // "currency" : 'INR',
+                "cost": 10
+            }
+
+            $scope.click = function(){
+
+                //debugger; attaches the debugger if on inspect mode [ F12 ]
+                $scope.userinput = 'reset';
+                console.log('clicked', $scope.userinput)
+            }
+
+            $scope.clickWithData = function(data){
+                console.log('clicked With Data method', data);
+            }
+
+            $scope.getClickeditem = function(data){
+                console.log('clicked to get Item Data', data)
+            }
+
+            $scope.mouseOnSendData = function(){
+                console.log('on mouse ');
+                //alert('get going')
+            }
+
+            //$scope.make = cynoservice.getHello("Sachin");
+        }])
+
+
+        // app.service('cynoservice', function(){
+        //     return {
+
+        //         getHello : function(x){
+        //             return 'hello ' + x;
+        //         }
+        //     }
+        // })
+    </script>
 </body>
 
 </html>
