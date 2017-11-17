@@ -2,7 +2,7 @@
 
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.js"></script>
-    <!-- <script src="path-to-js"></script> -->
+
 </head>
 
 <body style="margin-left:30%;" ng-app="cynoApp">
@@ -13,50 +13,86 @@
         </h1>
 
         <h2> Session - 2 </h2>
-        <h3> App & Controllers </h3>
+        <h3> App & Services </h3>
 
-        <h2> {{company}}</h2>
+        Output from Service 
+        {{getServiceFunctionResult}}
 
-        <input ng-model="company">
+        <h3> {{modifydata}} </h3>
 
-        <p ng-repeat="item in sampleArr" >
-            <span ng-click="getClickeditem(item)";>{{item}}</span>
-        </p>
+        <h3> Modify Input</h3>
+        <input ng-model="formData.name" placeholder="Enter your name">
+        <button ng-click="Submit();" > Submit to Service </button>
 
-        <div >
-            <h4>{{sampleObject.name}}</h4>
-            <h4>{{sampleObject.location}}</h4>
-            <h4>{{sampleObject.country}}</h4>
-            <!-- <h4>{{sampleObject.currency}}</h4> -->
-            <h4>{{sampleObject.cost | currency }}</h4>
+        <div> Result From Service :
+            <p>
+                {{serviceResult}}
+            </p> 
         </div>
 
-        <div>
-            <h2>Event Handler</h2>
-            <input ng-model="userinput">
-            <button ng-click="click();">Click Me</button>
-            <button ng-click="clickWithData(userinput);" ng-mouseover="mouseOnSendData();">Send Data</button>
-        </div>
+        <h3> Angular Internal Service </h3>
+        <p> {{myIP}} </p>
+        <button value="get my IP" ng-click="retrieveIP();">get my IP</button>
 
-        <div ng-controller="cyno2Ctrl">
-                <h2> What happens if we define a new controller and overide the same things?</h2>
-        </div>
+        <cyno-sure></cyno-sure>
     </div>
+
 
     <script>
         
         //Define a new Module
-        //angular.module("myMod", []);
-
-
         var app = angular.module("cynoApp", []);
 
 
-        app.controller("cynoCtrl", [ "$scope",  function( $scope ){
+        app.service("cynoService",  function(  ){
 
+            return {
+
+                amIAvailable : function(){
+                    return "yes, your are available!!";
+                },
+
+                canYouChangeData : function(x){
+
+                    //$http.get("");
+                    var d = new Date();
+                    return x + " - " + d.toDateString(); 
+                },
+
+
+            }
+        })
+
+
+        app.directive("cynoSure", function(){
+            return {
+                template : "<h2> Cynosure HSR {{$ctrl.something}} </h2>",
+                controller : 
+            }
+        })
+
+        app.controller("sureCtrl", function($scope){
+            $scope.AmIInitialised ="Am I seen"
+        })
+
+        app.controller("cynoCtrl", [ "$scope", "cynoService", "$http",  function( $scope, cynoService, $http ){
             $scope.company = "cynosure-inc";
 
-            $scope.make = "vento";
+            //$scope.make = "vento";
+
+            $scope.formData = {
+                name : '',
+                age : '',
+                gender : ''
+            }
+
+            $scope.getServiceFunctionResult = cynoService.amIAvailable();
+
+            $scope.modifydata = cynoService.canYouChangeData("Cynosure")
+
+            $scope.userInput ;
+            $scope.serviceResult;
+            $scope.myIP = "Uknown";
 
             $scope.sampleArr = ["1", 2, 3, 4];
 
@@ -66,6 +102,24 @@
                 "country" : "India",
                 // "currency" : 'INR',
                 "cost": 10
+            }
+
+            $scope.retrieveIP = function(){
+                console.log('retrieveIP called')
+                
+                $http.get("https://api.ipify.org?format=json").then(res => {
+                        console.log('res', res)
+                        
+                        if(res.status == 200 ){
+                            $scope.myIP = res.data['ip'];
+                        }
+                }, err =>{
+                        $scope.myIP = err;
+                    }
+                )
+            }
+            $scope.Submit = function(){
+                $scope.serviceResult = cynoService.canYouChangeData( $scope.formData.name)
             }
 
             $scope.click = function(){
