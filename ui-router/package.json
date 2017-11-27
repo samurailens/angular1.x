@@ -1,0 +1,23 @@
+{
+  "name": "angular1.x",
+  "version": "1.0.0",
+  "description": "Starter pack for angular1.x",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samurailens/angular1.x.git"
+  },
+  "author": "Sachin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/samurailens/angular1.x/issues"
+  },
+  "homepage": "https://github.com/samurailens/angular1.x#readme",
+  "dependencies": {
+    "webpack": "^3.8.1",
+    "webpack-dev-server": "^2.9.4"
+  }
+}
