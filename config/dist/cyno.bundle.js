@@ -74,95 +74,65 @@ module.exports = __webpack_require__(1);
 /* 1 */
 /***/ (function(module, exports) {
 
-var app = angular.module("cynoApp", ["ui.router"]);
+var app = angular.module("cynoApp", ["ngRoute"]);
 
-app.constant('_', window._);
 
-app.run(function (_, $rootScope, $state) {
+app.config( 
+    
+        [ '$routeProvider', 
+            function( $routeProvider){
+    
+                $routeProvider.when( '/home', 
+                    {
+                        templateUrl : '../templates/home.html',
+                        controller : 'routeController'
+                    }
+                ),
 
-        $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-            console.log('toState', toState)
-            console.log('toParams', toState)
-            console.log('fromState', fromState)
-            console.log('fromParams', fromParams)
+                $routeProvider.when( '/admin/:cyno123', 
+                    {
+                        templateUrl : '../templates/admin.html',
+                        controller : 'routeController'
+                    }
+                ),
+                $routeProvider.when( '/guest', 
+                    {
+                        templateUrl : '../templates/guest.html',
+                        controller : function($scope, $location){
+                            $scope.name = 'Cynosure Guest';
 
-            console.log('data', toState.data.username)
-        });
-    });
+                            $scope.inFun = function(){
+                                alert('hey')
+                            }
 
-app.config(function ($stateProvider, $urlRouterProvider) {
-
-    $urlRouterProvider.otherwise('/home');
-
-    $stateProvider
-        //Top Level URL
-        .state('home', {
-            url: '/home',
-            templateUrl: '../templates/home.html',
-            controller : 'routeController'
-        })
-
-        .state('home.users', {
-            url: '/users',
-            templateUrl : '../templates/home-users.html',
-            controller: function($scope){
-                $scope.dogs = ['cynoAdmin', 'CynoGuest', 'CynoUser'];
-            },
-            data : {
-                username : 'cyno-guest'
+                            $scope.guestToHome = function(){
+                                
+                                $location.path('/home');
+                            }
+                        }
+                    }
+                ),
+                $routeProvider.otherwise({redirectTo:'/home'});
             }
-        })
-      
-        .state('/login', {
-            url: '/login',
-            templateUrl : '../templates/login.html',
-            controller : 'routeController',
-            data : {
-                username : 'cyno-guest'
-            }
-        })
+        ]
+    );
 
-        .state('admin', {
-            url: '/admin',
-            templateUrl: '../templates/admin.html',
-            data: {
-                username : 'cyno-guest',
-                authorization: true,
-                redirectTo: 'login'
-            }
-        })
-
-        .state('guest', {
-            url: '/guest',
-            templateUrl: '../templates/guest.html',
-            controller : 'routeController',
-            data : {
-                username : 'cyno-guest'
-            }
-        });
-
-});
-
-app.controller("routeController", function($scope, $state){
-
+app.controller("routeController", function($scope, $route, $routeParams, $location){
 
     $scope.clickHomebtn = function(){
-        // console.log($route.current);
-        console.log('$state', $state)
-       
+        console.log($route.current);
+        console.log('routeParams', $routeParams)
     }
 
     $scope.clickAdminBtn = function(){
-
+        console.log('routeParams', $routeParams)
+        console.log('location', $location)
+        console.log('route', $route)
     }
 
     $scope.guestToHome = function(){
 
-        $state.go('home')
-    }
-
-    $scope.doLogin= function(){
-
+        $location.path('/home');
     }
 })
 

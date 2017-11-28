@@ -9,6 +9,7 @@ app.run(function (_, $rootScope, $state) {
             console.log('toParams', toState)
             console.log('fromState', fromState)
             console.log('fromParams', fromParams)
+
             console.log('data', toState.data.username)
         });
     });
@@ -58,6 +59,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         .state('guest', {
             url: '/guest',
             templateUrl: '../templates/guest.html',
+            controller : 'routeController',
             data : {
                 username : 'cyno-guest'
             }
