@@ -1,0 +1,43 @@
+<div class="container" style="margin-top:4em;">
+
+        <div class="panel" cynoheader>
+                hello
+        </div>
+
+    <!-- <form class="form-group form-control">
+        <legend>
+            Login
+        </legend>
+        <input type="email" ng-model="controller.email" >
+        <input type="password" ng-model="controller.password">
+        <button type="button" ng-click="controller.submit();"></button>
+    </form> -->
+
+
+    <form style="width:40%;">
+        <legend>
+            Login
+        </legend>
+        <div class="form-group">
+            <label for="email">Email address:</label>
+            <input type="email" class="form-control" id="email" ng-model="controller.email">
+        </div>
+        <div class="form-group">
+            <label for="pwd">Password:</label>
+            <input type="password" class="form-control" id="pwd" ng-model="controller.password">
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox"> Remember me</label>
+        </div>
+        <button type="button" class="btn btn-default" ng-click="controller.submit();">Submit</button>
+    </form>
+
+        <div class="panel">
+           
+            <p style="padding:2em;"> your ip address : {{controller.myIp}}</p>
+            <button type="button" class="btn btn-default btn-success"  style="margin:0em 0em 2em 2em;" ng-click="controller.getMyIp();">Fetch My IP</button>
+        </div>
+
+        
+    </div>

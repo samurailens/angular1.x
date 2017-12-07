@@ -11,6 +11,7 @@ app.constant('appName', 'CynosureApp')
 app.service("AuthService", function(){
 
     isAuthValid = false;
+    redirectTo = '';
 
     return {
         isLoggedIn : function(){
@@ -25,6 +26,10 @@ app.service("AuthService", function(){
         doLogout : function(){
             isAuthValid = false;
             return isAuthValid
+        },
+
+        setRedirect : function(route){
+            redirectTo = route;
         }
     }
 })
@@ -38,15 +43,17 @@ app.run(function ($rootScope, $location, AuthService) {
     var validateOpenroute = function (route) {
         return _.find(openRoutes,
             function (noAuthRoute) {
-                console.log('route', route)
-                console.log('noAuthRoute', noAuthRoute)
-                console.log('route.startsWith(noAuthRoute);', route.startsWith(noAuthRoute))
+                // console.log('route', route)
+                // console.log('noAuthRoute', noAuthRoute)
+                // console.log('route.startsWith(noAuthRoute);', route.startsWith(noAuthRoute))
                 return route.startsWith(noAuthRoute);
             });
     };
 
     $rootScope.$on('$routeChangeStart', function (event, next, current) {
 
+        console.log('next', next);
+        console.log('current', current);
         // if route requires auth and user is not logged in
         if (!validateOpenroute($location.url()) && !AuthService.isLoggedIn()) {
 
